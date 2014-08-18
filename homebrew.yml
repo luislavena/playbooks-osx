@@ -1,0 +1,29 @@
+---
+- hosts: workstation
+
+  tasks:
+    - name: Check Homebrew is installed
+      stat: path=/usr/local/bin/brew
+      register: brew_installed
+
+    - name: Install Homebrew
+      shell: ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+      when: brew_installed.stat.exists == false
+
+    - name: Set Homebrew taps
+      homebrew_tap: tap=caskroom/cask state=present
+
+    - name: Install brew-cask
+      homebrew: name=brew-cask state=present
+
+    - name: Check brew-cask already initialized
+      stat: path=/opt/homebrew-cask/Caskroom
+      register: brew_cask_installed
+
+    - name: First-run for brew-cask
+      shell: brew cask list
+      when: brew_cask_installed.stat.exists == false
+
+    - name: Verify Homebrew is OK (doctor)
+      shell: brew doctor
+      when: brew_installed.stat.exists == false and brew_cask_installed.exists == false

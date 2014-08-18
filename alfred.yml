@@ -1,0 +1,6 @@
+---
+- hosts: workstation
+
+  tasks:
+    - name: Install Alfred
+      homebrew_cask: name=alfred state=present

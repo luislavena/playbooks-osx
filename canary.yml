@@ -1,0 +1,12 @@
+---
+- hosts: workstation
+
+  tasks:
+    - name: Add alternate tap for casks versions
+      homebrew_tap: tap=caskroom/versions state=present
+
+    - name: Install Google Chrome (Canary)
+      homebrew_cask: name=google-chrome-canary state=present
+
+    - name: Remove alternate tap (to avoid conflicts)
+      homebrew_tap: tap=caskroom/versions state=absent

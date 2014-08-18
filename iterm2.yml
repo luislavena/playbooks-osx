@@ -1,0 +1,6 @@
+---
+- hosts: workstation
+
+  tasks:
+    - name: Install iTerm2
+      homebrew_cask: name=iterm2 state=present
